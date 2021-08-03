@@ -14,6 +14,7 @@ import binascii
 import pickle
 import numpy
 from bitarray import bitarray
+from checkSum import findChecksum
 from config import *
 
 #noise
@@ -39,7 +40,8 @@ s.connect((host,port))
 while True:
     str_ = input("Write your message: ")
     my_bitarray = verification(str_)                    #This is verified message
-    bits = noise(my_bitarray)                           #This is message with noise
+    checkSum = findChecksum(my_bitarray)
+    bits = noise(checkSum + my_bitarray)                           #This is message with noise
     s.send(bits)
     if(str == "Bye" or str == "bye"):
         break

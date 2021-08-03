@@ -9,6 +9,7 @@
 ############################################################
 """
 
+from checkSum import checkReceiverChecksum, validateCheckSum
 import socket
 import binascii
 from config import *
@@ -28,10 +29,15 @@ s.listen(5)
 c, addr = s.accept()
 print ("Socket Up and running with a connection from",addr)
 while True:
-    rcvdData = c.recv(1024)
+    rcvdData, address = c.recvfrom(1024)
     if(rcvdData == b''):
         break
-    print ("Received message:",Codification(rcvdData))                  #In this line codification is done, python print method converts array into string automatically 
+
+    rcvd_check_sum, received_msg = checkReceiverChecksum(rcvdData)
+
+    validateCheckSum(rcvd_check_sum)
+
+    print ("Received message:",Codification(received_msg.tobytes()))                  #In this line codification is done, python print method converts array into string automatically 
 #    sendData = input("N: ")                                            #Print is verification cause it sends the message to the terminal
 #    c.send(sendData.encode())
 #    if(sendData == "Bye" or sendData == "bye"):
