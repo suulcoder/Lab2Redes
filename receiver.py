@@ -9,6 +9,8 @@
 ############################################################
 """
 
+from enum import Flag
+from hamming import calcRedundantBits, detectError
 from checkSum import checkReceiverChecksum, validateCheckSum
 import socket
 import binascii
@@ -35,9 +37,21 @@ while True:
 
     rcvd_check_sum, received_msg = checkReceiverChecksum(rcvdData)
 
-    validateCheckSum(rcvd_check_sum)
+    validCheckSum = validateCheckSum(rcvd_check_sum)
 
-    print ("Received message:",Codification(received_msg.tobytes()))                  #In this line codification is done, python print method converts array into string automatically 
+    if (not validCheckSum):
+        '''If the check sum is not valid les correct the error'''
+        isInvalid = True
+        print("\n\t\tError Correction")
+        while isInvalid:
+            r = calcRedundantBits(len(received_msg))
+            print("\nredundant bits", r)
+            print("Error Data is " + received_msg.to01())
+            correction = detectError(received_msg, r)
+            print("The position of error is " + str(correction))
+            isInvalid = False
+
+    print ("\nRECEIVED MSG:",Codification(received_msg.tobytes()))                  #In this line codification is done, python print method converts array into string automatically 
 #    sendData = input("N: ")                                            #Print is verification cause it sends the message to the terminal
 #    c.send(sendData.encode())
 #    if(sendData == "Bye" or sendData == "bye"):

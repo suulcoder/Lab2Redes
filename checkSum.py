@@ -88,13 +88,17 @@ def checkReceiverChecksum(received_message):
 def validateCheckSum(receiver_check_sum):
     '''Validate if Received checkSum is correct'''
     # # If sum = 0, No error is detected
+
+    print("\n-----------------------------------------------")
+    print("\t\tError Detection")
+
     if(receiver_check_sum == '11111111'):
-        print("Receiver Checksum is equal to 1. Therefore,")
+        print("\nReceiver Checksum is equal to 1. Therefore,")
         print("STATUS: ACCEPTED")
         return True
     # Otherwise, Error is detected
     else:
-        print("Receiver Checksum is not equal to 1. Therefore,")
+        print("\nReceiver Checksum is not equal to 1. Therefore,")
         print("STATUS: ERROR DETECTED")
     
     return False

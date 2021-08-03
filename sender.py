@@ -42,6 +42,7 @@ while True:
     my_bitarray = verification(str_)                    #This is verified message
     checkSum = findChecksum(my_bitarray)
     bits = noise(checkSum + my_bitarray)                           #This is message with noise
+    print(my_bitarray)
     s.send(bits)
     if(str == "Bye" or str == "bye"):
         break
